@@ -3,7 +3,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LoginForm extends JFrame implements ActionListener {
+public class LoginForm extends JPanel implements ActionListener {
+
+    private LoginListener loginListener;
 
     JButton b1;
     JPanel newPanel;
@@ -11,7 +13,9 @@ public class LoginForm extends JFrame implements ActionListener {
     JLabel userLabel, passLabel;
     final JTextField  textField1, textField2;
 
-    public LoginForm() {
+    public LoginForm(LoginListener loginListener) {
+         this.loginListener = loginListener;
+
         //create label for username
         userLabel = new JLabel();
         userLabel.setText("Username");      //set label value for textField1
@@ -46,9 +50,9 @@ public class LoginForm extends JFrame implements ActionListener {
 
         //perform action on button click
         b1.addActionListener(this);     //add action listener to button
-        setTitle("LOGIN FORM");         //set title to the login form
+//        setTitle("LOGIN FORM");
+//        setSize(500, 5000);
         setVisible(true);
-        setSize(1920, 1080);
     }
 
     @Override
@@ -61,13 +65,15 @@ public class LoginForm extends JFrame implements ActionListener {
         System.out.println(userValue);
         System.out.println(passValue);
 
-        JLabel helloLabel = new JLabel();
-        helloLabel.setText("Hello: "  + userValue + " with password: " + passValue);
-        helloPanel.add(helloLabel);
+//        JLabel helloLabel = new JLabel();
+//        helloLabel.setText("Hello: "  + userValue + " with password: " + passValue);
+//        helloPanel.add(helloLabel);
 
-        newPanel.setVisible(false);
-        this.add(helloPanel, BorderLayout.CENTER);
-        helloPanel.setVisible(true);
+        if (loginListener != null) {
+            loginListener.onLogin(true);
+        }
+
+        JOptionPane.showMessageDialog(this, "Zalogowano pomyślnieś");
     }
 
 
