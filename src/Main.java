@@ -3,19 +3,19 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Main extends JFrame implements LoginListener {
+public class Main extends JFrame implements LoginListener, LogoutListener {
 
     LoginForm loginForm;
     Application application;
 
     public Main() {
-        this.setSize(500, 500);
+        this.setSize(400, 300);
         this.setTitle("Moja aplikacja");
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         loginForm = new LoginForm(this);
-        application = new Application();
+        application = new Application(this);
         this.getContentPane().add(loginForm);
         this.setVisible(true);
 
@@ -140,12 +140,25 @@ public class Main extends JFrame implements LoginListener {
 
         System.out.println("DUPA DUAPA DSADAS");
         if (success) {
+            this.setSize(500, 500);
             getContentPane().remove(loginForm);
             getContentPane().add(application);
             revalidate();
             repaint();
         } else {
             JOptionPane.showMessageDialog(this, "Nieprawidłowy login lub hasło", "Błąd logowania", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+
+    @Override
+    public void onLogout(boolean success) {
+        if (success) {
+            this.setSize(400, 300);
+            getContentPane().remove(application);
+            getContentPane().add(loginForm);
+            revalidate();
+            repaint();
         }
     }
 }

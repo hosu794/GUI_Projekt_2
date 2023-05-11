@@ -51,13 +51,12 @@ public class LoginForm extends JPanel implements ActionListener {
         //perform action on button click
         b1.addActionListener(this);     //add action listener to button
 //        setTitle("LOGIN FORM");
-//        setSize(500, 5000);
+        setSize(300, 200);
         setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("DUPA");
 
         String userValue = textField1.getText();
         String passValue = textField2.getText();
