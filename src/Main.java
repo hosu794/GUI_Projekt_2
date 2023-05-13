@@ -1,7 +1,9 @@
 import javax.swing.*;
-import java.awt.*;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Main extends JFrame implements LoginListener, LogoutListener {
 
@@ -113,6 +115,20 @@ public class Main extends JFrame implements LoginListener, LogoutListener {
 
         // Start jobs
 
+        DataSource dataSource = new DataSource<User>("users.txt");
+//        dataSource.saveObject(user1);
+//        dataSource.saveObject(user2);
+//        dataSource.saveObject(user3);
+
+       ArrayList<User> users =  dataSource.getListOfSourceObjects();
+       ArrayList<User> foundUsers = (ArrayList<User>) users.stream().filter(user -> Objects.equals(user.getLogin(), "admin") && Objects.equals(user.getPassword(), "password")).toList();
+
+
+//        ArrayList<User> users = new ArrayList<>();
+//        users.add(user1);
+//        users.add(user2);
+//        users.add(user3);
+
 //        buildBuildingForClientOne.startJob();
 //        buildBuildingForClientThree.startJob();
 //        buildBuildingForClientTwo.startJob();
@@ -138,7 +154,6 @@ public class Main extends JFrame implements LoginListener, LogoutListener {
 
         System.out.println(success);
 
-        System.out.println("DUPA DUAPA DSADAS");
         if (success) {
             this.setSize(500, 500);
             getContentPane().remove(loginForm);

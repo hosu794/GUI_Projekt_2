@@ -1,12 +1,15 @@
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.SplittableRandom;
 
-public class User extends Employee {
+public class User extends Employee implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private static final int FIRST_LETTER_INDEX = 0;
     private String login;
-    private String password;
+    public String password;
     private String initial;
 
     private static long currentId = 1;
@@ -67,5 +70,13 @@ public class User extends Employee {
                 ", initial='" + initial + '\'' +
                 ", id=" + id +
                 '}';
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

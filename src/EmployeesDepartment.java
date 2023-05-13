@@ -1,9 +1,13 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class EmployeesDepartment {
+public class EmployeesDepartment implements Serializable {
+
+    private static final long serialVersionUID = 3L;
+
 
     static public LinkedList<String> departmentsNames = new LinkedList<String>();
 
