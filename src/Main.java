@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.xml.crypto.Data;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,10 +17,13 @@ public class Main extends JFrame implements LoginListener, LogoutListener {
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        loginForm = new LoginForm(this);
+        DataSource dataSource = new DataSource<User>("users.txt");
+
+        loginForm = new LoginForm(this, dataSource);
         application = new Application(this);
         this.getContentPane().add(loginForm);
         this.setVisible(true);
+
 
     }
     public static void main(String[] args) {
@@ -115,13 +119,20 @@ public class Main extends JFrame implements LoginListener, LogoutListener {
 
         // Start jobs
 
-        DataSource dataSource = new DataSource<User>("users.txt");
-//        dataSource.saveObject(user1);
-//        dataSource.saveObject(user2);
-//        dataSource.saveObject(user3);
+//        DataSource dataSourceUsers = new DataSource<User>("users.txt");
+//        DataSource dataSourceWorks = new DataSource<Work>("works.txt");
 
-       ArrayList<User> users =  dataSource.getListOfSourceObjects();
-       ArrayList<User> foundUsers = (ArrayList<User>) users.stream().filter(user -> Objects.equals(user.getLogin(), "admin") && Objects.equals(user.getPassword(), "password")).toList();
+//        dataSourceWorks.saveObject(contructionWorkOne);
+//        dataSourceWorks.saveObject(contructionWorkTwo);
+
+//        ArrayList<Work> works = dataSourceWorks.getListOfSourceObjects();
+//        System.out.println(works);
+
+//        dataSourceUsers.saveObject(user1);
+//        dataSourceUsers.saveObject(user2);
+//        dataSourceUsers.saveObject(user3);
+
+//       ArrayList<User> users =  dataSourceUsers.getListOfSourceObjects();
 
 
 //        ArrayList<User> users = new ArrayList<>();

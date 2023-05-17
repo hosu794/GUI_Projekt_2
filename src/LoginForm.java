@@ -1,7 +1,10 @@
 import javax.swing.*;
+import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Optional;
 
 public class LoginForm extends JPanel implements ActionListener {
 
@@ -13,8 +16,11 @@ public class LoginForm extends JPanel implements ActionListener {
     JLabel userLabel, passLabel;
     final JTextField  textField1, textField2;
 
-    public LoginForm(LoginListener loginListener) {
+    private DataSource dataSource;
+
+    public LoginForm(LoginListener loginListener, DataSource dataSource) {
          this.loginListener = loginListener;
+         this.dataSource = dataSource;
 
         //create label for username
         userLabel = new JLabel();
@@ -64,15 +70,33 @@ public class LoginForm extends JPanel implements ActionListener {
         System.out.println(userValue);
         System.out.println(passValue);
 
-//        JLabel helloLabel = new JLabel();
-//        helloLabel.setText("Hello: "  + userValue + " with password: " + passValue);
-//        helloPanel.add(helloLabel);
+        ArrayList<User> userArrayList = dataSource.getListOfSourceObjects();
+
+        Optional<User> result = userArrayList.stream()
+                .filter(user -> user.getLogin().equals(userValue) && user.getPassword().equals(passValue))
+                .findFirst();
 
         if (loginListener != null) {
             loginListener.onLogin(true);
         }
 
-        JOptionPane.showMessageDialog(this, "Zalogowano pomyślnieś");
+//         if (result.isPresent()) {
+//            User user = result.get();
+//
+//            if (loginListener != null) {
+//                loginListener.onLogin(true);
+//            }
+//
+//            JOptionPane.showMessageDialog(this, "Zalogowano pomyślnieś");
+//
+//            System.out.println(user);
+//        } else {
+//            System.out.println("User not found!");
+//
+//            JOptionPane.showMessageDialog(this, "Nieudane logowanie. Sprawdź swoje dane.", "Błąd logowania", JOptionPane.ERROR_MESSAGE);
+//        }
+
+
     }
 
 

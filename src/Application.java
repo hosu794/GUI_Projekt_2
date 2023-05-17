@@ -3,32 +3,40 @@ import java.awt.*;
 
 public class Application extends JPanel   {
 
-    JButton button;
-
     LogoutListener logoutListener;
 
     public Application(LogoutListener logoutListener) {
 
-        this.logoutListener = logoutListener;
         this.setBackground(Color.BLUE);
 
-        this.button = new JButton("Start");
-        this.setLayout(new BorderLayout());
-        this.add( button, BorderLayout.PAGE_END);
-        setSize(500, 500);
+        this.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        RightColumnLayout column2Panel = new RightColumnLayout();
+        LeftColumnLayout leftColumnLayout = new LeftColumnLayout(logoutListener, column2Panel);
+
+        gbc.gridx = 0;
+        gbc.gridy = GridBagConstraints.RELATIVE;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.weightx = 0.7;
+        this.add(leftColumnLayout, gbc);
+
+        // Dodanie panelu drugiej kolumny do layoutu
+        gbc.gridx = 1;
+        gbc.gridy = GridBagConstraints.RELATIVE;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.weightx = 0.3;
+        this.add(column2Panel, gbc);
+
+        // Dodanie przycisku na dole
+        gbc.gridx = 0;
+        gbc.gridy = GridBagConstraints.RELATIVE;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.weightx = 1.0;
+
+        setSize(1920, 1080);
         this.setVisible(true);
-
-        this.button.addActionListener(e -> {
-
-            if (logoutListener != null) {
-            logoutListener.onLogout(true);
-
-            JOptionPane.showConfirmDialog(this, "Wylogowano pomyślnie!");
-
-            }
-
-        });
-
 
     }
 

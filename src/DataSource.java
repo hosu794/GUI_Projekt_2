@@ -3,6 +3,8 @@ import java.util.ArrayList;
 
 public class DataSource<T extends Serializable> {
 
+    private static final long serialVersionUID = 4L;
+
     private String sourceFilename;
 
     public DataSource(String sourceFilename) {

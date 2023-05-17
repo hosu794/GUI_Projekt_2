@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -7,7 +8,9 @@ enum WorkType {
     DISASSEMBLY,
     REPLACEMENT
 }
-public class Work extends Thread {
+public class Work extends Thread implements Serializable {
+
+
 
     public static Work getObject(long id) {
         return workHashMap.get(id);
