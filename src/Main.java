@@ -12,7 +12,7 @@ public class Main extends JFrame implements LoginListener, LogoutListener {
     Application application;
 
     public Main() {
-        this.setSize(400, 300);
+        setSize(1920, 1080);
         this.setTitle("Moja aplikacja");
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -166,7 +166,7 @@ public class Main extends JFrame implements LoginListener, LogoutListener {
         System.out.println(success);
 
         if (success) {
-            this.setSize(500, 500);
+            setSize(1920, 1080);
             getContentPane().remove(loginForm);
             getContentPane().add(application);
             revalidate();
@@ -180,7 +180,7 @@ public class Main extends JFrame implements LoginListener, LogoutListener {
     @Override
     public void onLogout(boolean success) {
         if (success) {
-            this.setSize(400, 300);
+            setSize(1920, 1080);
             getContentPane().remove(application);
             getContentPane().add(loginForm);
             revalidate();

@@ -76,25 +76,28 @@ public class LoginForm extends JPanel implements ActionListener {
                 .filter(user -> user.getLogin().equals(userValue) && user.getPassword().equals(passValue))
                 .findFirst();
 
-        if (loginListener != null) {
-            loginListener.onLogin(true);
-        }
-
-//         if (result.isPresent()) {
-//            User user = result.get();
-//
-//            if (loginListener != null) {
-//                loginListener.onLogin(true);
-//            }
-//
-//            JOptionPane.showMessageDialog(this, "Zalogowano pomyślnieś");
-//
-//            System.out.println(user);
-//        } else {
-//            System.out.println("User not found!");
-//
-//            JOptionPane.showMessageDialog(this, "Nieudane logowanie. Sprawdź swoje dane.", "Błąd logowania", JOptionPane.ERROR_MESSAGE);
+//        if (loginListener != null) {
+//            CurrentUser.setCurrentUser(result.get());
+//            loginListener.onLogin(true);
 //        }
+
+         if (result.isPresent()) {
+            User user = result.get();
+
+            CurrentUser.setCurrentUser(user);
+
+            if (loginListener != null) {
+                loginListener.onLogin(true);
+            }
+
+            JOptionPane.showMessageDialog(this, "Zalogowano pomyślnieś");
+
+            System.out.println(user);
+        } else {
+            System.out.println("User not found!");
+
+            JOptionPane.showMessageDialog(this, "Nieudane logowanie. Sprawdź swoje dane.", "Błąd logowania", JOptionPane.ERROR_MESSAGE);
+        }
 
 
     }

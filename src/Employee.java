@@ -5,7 +5,7 @@ import java.util.List;
 import java.time.LocalDate;
 
 
-public abstract class Employee implements Comparable<Employee>, Serializable {
+public abstract class Employee extends CheckListItemAbstract implements Comparable<Employee>, Serializable  {
 
     private static final long serialVersionUID = 2L;
 
