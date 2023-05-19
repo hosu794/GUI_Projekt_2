@@ -46,15 +46,6 @@ public class DataSource<T extends Serializable> {
     public void updateListOfUpdate(ArrayList<T> listOfObjets) {
         try {
 
-//            ArrayList<T> sourceObjects;
-//
-//            File f = new File(this.sourceFilename);
-//            if(f.exists()) {
-//                sourceObjects = (ArrayList<T>) this.getListOfSourceObjects();
-//            } else {
-//                sourceObjects = new ArrayList<>();
-//            }
-
             FileOutputStream fileOutputStream = null;
 
             fileOutputStream = new FileOutputStream(this.sourceFilename);

@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class ListItems extends JPanel implements ListActionPanelListener {
 
@@ -70,26 +71,20 @@ public class ListItems extends JPanel implements ListActionPanelListener {
     public void delete() {
         ListModel<CheckListItemAbstract> model = list.getModel();
         int size = model.getSize();
-        System.out.println(size);
+
         ArrayList<CheckListItemAbstract> remainingItems = new ArrayList<>();
 
-        ArrayList<User> updatedUsers = new ArrayList<>();
+        ArrayList<User> updatedUsers = (ArrayList<User>) IntStream.range(0, size)
+                .mapToObj(model::getElementAt)
+                .filter(item -> !item.isSelected())
+                .peek(remainingItems::add)
+                .map(item -> (User) item)
+                .collect(Collectors.toList());
 
-        for (int i = 0; i < size; i++) {
-            CheckListItemAbstract item = model.getElementAt(i);
-            if (!item.isSelected()) {
-                remainingItems.add(item);
-                updatedUsers.add((User) item);
-            }
-        }
-
-        System.out.println(updatedUsers);
         this.userDataSource.updateListOfUpdate(updatedUsers);
 
         DefaultListModel<CheckListItemAbstract> newModel = new DefaultListModel<>();
-        for (CheckListItemAbstract item : remainingItems) {
-            newModel.addElement(item);
-        }
+        remainingItems.forEach(newModel::addElement);
         list.setModel(newModel);
     }
 
