@@ -11,24 +11,6 @@ public class DataSource<T extends Serializable> {
         this.sourceFilename = sourceFilename;
     }
 
-    private void initArrayList() {
-        FileOutputStream fileOutputStream = null;
-        try {
-            fileOutputStream = new FileOutputStream(this.sourceFilename);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-
-            ArrayList<T> sourceObjects = new ArrayList<>();
-
-            objectOutputStream.writeObject(sourceObjects);
-
-            fileOutputStream.close();
-            objectOutputStream.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public ArrayList<T> getListOfSourceObjects() {
 
         ArrayList<T> sourceObjects = null;
@@ -60,6 +42,36 @@ public class DataSource<T extends Serializable> {
         return sourceObjects;
 
     }
+
+    public void updateListOfUpdate(ArrayList<T> listOfObjets) {
+        try {
+
+//            ArrayList<T> sourceObjects;
+//
+//            File f = new File(this.sourceFilename);
+//            if(f.exists()) {
+//                sourceObjects = (ArrayList<T>) this.getListOfSourceObjects();
+//            } else {
+//                sourceObjects = new ArrayList<>();
+//            }
+
+            FileOutputStream fileOutputStream = null;
+
+            fileOutputStream = new FileOutputStream(this.sourceFilename);
+
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+
+            objectOutputStream.writeObject(listOfObjets);
+
+            fileOutputStream.close();
+            objectOutputStream.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     public void saveObject(T sourceObject)  {
         try {
