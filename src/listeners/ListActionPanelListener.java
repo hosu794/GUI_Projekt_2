@@ -1,3 +1,5 @@
+package listeners;
+
 public interface ListActionPanelListener {
 
     public void delete();

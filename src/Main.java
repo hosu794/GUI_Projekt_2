@@ -1,10 +1,10 @@
+
+import listeners.LoginListener;
+import listeners.LogoutListener;
+
 import javax.swing.*;
-import javax.xml.crypto.Data;
-import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class Main extends JFrame implements LoginListener, LogoutListener {
 
@@ -12,7 +12,7 @@ public class Main extends JFrame implements LoginListener, LogoutListener {
     Application application;
 
     public Main() {
-        setSize(1920, 1080);
+        setSize(720, 320);
         this.setTitle("Moja aplikacja");
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -146,11 +146,11 @@ public class Main extends JFrame implements LoginListener, LogoutListener {
 //        buildBuildingForClientFour.startJob();
 //        contructionJobForClientFive.startJob();
 //
-//        System.out.println("Job has started!!!");
+//        System.out.println("dao.Job has started!!!");
 //
 //        System.out.println(Work.getObject(1l).getWorkType());
 //        System.out.println(Work.getWorkHashMap());
-//        System.out.println(Job.getJobHashMap());
+//        System.out.println(dao.Job.getJobHashMap());
 //
 //        System.out.println(Employee.getEmployees());
 //        System.out.println(leader2.getBrigadeList());
@@ -166,7 +166,7 @@ public class Main extends JFrame implements LoginListener, LogoutListener {
         System.out.println(success);
 
         if (success) {
-            setSize(1920, 1080);
+            setSize(720, 320);
             getContentPane().remove(loginForm);
             getContentPane().add(application);
             revalidate();
@@ -180,7 +180,7 @@ public class Main extends JFrame implements LoginListener, LogoutListener {
     @Override
     public void onLogout(boolean success) {
         if (success) {
-            setSize(1920, 1080);
+            setSize(720, 320);
             getContentPane().remove(application);
             getContentPane().add(loginForm);
             revalidate();

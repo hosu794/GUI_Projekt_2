@@ -80,8 +80,6 @@ public class DataSource<T extends Serializable> {
 
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
-
-
         sourceObjects.add(sourceObject);
 
         objectOutputStream.writeObject(sourceObjects);

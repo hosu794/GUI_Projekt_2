@@ -1,3 +1,5 @@
+import listeners.ChangePageLayoutListener;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -20,7 +22,7 @@ public class RightColumnLayout extends JPanel implements ChangePageLayoutListene
         this.add(new JLabel("Panel 5"), "Panel 5");
         this.add(new JLabel("Panel 6"), "Panel 6");
         this.add(new JLabel("Panel 7"), "Panel 7");
-        setSize(1080, 720);
+        setSize(720, 320);
     }
 
     @Override
