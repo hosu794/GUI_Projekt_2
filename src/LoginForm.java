@@ -17,11 +17,13 @@ public class LoginForm extends JPanel implements ActionListener {
     JLabel userLabel, passLabel;
     final JTextField  textField1, textField2;
 
-    private DataSource dataSource;
+    private DataSource userDataSource;
+    private DataSource foremanDataSource;
 
-    public LoginForm(LoginListener loginListener, DataSource dataSource) {
+    public LoginForm(LoginListener loginListener, DataSource userDataSource, DataSource foremansDataSource) {
          this.loginListener = loginListener;
-         this.dataSource = dataSource;
+         this.userDataSource = userDataSource;
+         this.foremanDataSource = foremansDataSource;
 
         //create label for username
         userLabel = new JLabel();
@@ -71,14 +73,22 @@ public class LoginForm extends JPanel implements ActionListener {
         System.out.println(userValue);
         System.out.println(passValue);
 
-        ArrayList<User> userArrayList = dataSource.getListOfSourceObjects();
+        ArrayList<User> userArrayList = userDataSource.getListOfSourceObjects();
+        ArrayList<Foreman> foremanArrayList = foremanDataSource.getListOfSourceObjects();
 
-        Optional<User> result = userArrayList.stream()
+        System.out.println(foremanArrayList);
+
+        Optional<User> userResult = userArrayList.stream()
                 .filter(user -> user.getLogin().equals(userValue) && user.getPassword().equals(passValue))
                 .findFirst();
 
-         if (result.isPresent()) {
-            User user = result.get();
+        Optional<Foreman> foremanResult = foremanArrayList.stream()
+                .filter(foreman -> foreman.getLogin().equals(userValue) && foreman.getPassword().equals(passValue))
+                .findFirst();
+
+
+         if (userResult.isPresent()) {
+            User user = userResult.get();
 
             if (loginListener != null) {
                 loginListener.onLogin(true);
@@ -88,13 +98,30 @@ public class LoginForm extends JPanel implements ActionListener {
 
             ListActionPanel.updateLoggedInUser();
 
-            JOptionPane.showMessageDialog(this, "Zalogowano pomyślnieś");
+            JOptionPane.showMessageDialog(this, "Zalogowano pomyślnieś User'a");
 
             System.out.println(user);
         } else {
-            System.out.println("User not found!");
 
-            JOptionPane.showMessageDialog(this, "Nieudane logowanie. Sprawdź swoje dane.", "Błąd logowania", JOptionPane.ERROR_MESSAGE);
+            if(foremanResult.isPresent()) {
+
+                Foreman foreman = foremanResult.get();
+
+                if (loginListener != null) {
+                    loginListener.onLogin(true);
+                }
+
+                LoggedInUser.getInstance().setUser(foreman);
+                ListActionPanel.updateLoggedInUser();
+
+                JOptionPane.showMessageDialog(this, "Zalogowano pomyślnieś Foreman'a");
+
+            } else {
+                System.out.println("User not found!");
+
+                JOptionPane.showMessageDialog(this, "Nieudane logowanie. Sprawdź swoje dane.", "Błąd logowania", JOptionPane.ERROR_MESSAGE);
+            }
+
         }
 
 

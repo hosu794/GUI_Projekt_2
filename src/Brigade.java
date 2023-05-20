@@ -1,6 +1,9 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Brigade {
+public class Brigade extends CheckListItemAbstract implements Serializable {
+
+    private static final long serialVersionUID = 6L;
 
     private String name;
     private Foreman foreman;

@@ -35,10 +35,13 @@ public class LeftColumnLayout extends JPanel {
            ChangeCardLayoutPanel workChangeLayoutPanel = new ChangeCardLayoutPanel("Praca", "Panel 7", changePageLayoutListener);
            this.add(workChangeLayoutPanel);
 
-
+           ChangeCurrentUserPassword changeCurrentUserPassword = new ChangeCurrentUserPassword();
+           this.add(changeCurrentUserPassword);
 
            LogoutPanel logoutPanel = new LogoutPanel(logoutListener);
            this.add(logoutPanel);
+
+
 
 
 

@@ -18,9 +18,10 @@ public class Main extends JFrame implements LoginListener, LogoutListener {
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        DataSource foremanSource = new DataSource<Foreman>("foremans.txt");
         DataSource dataSource = new DataSource<User>("users.txt");
 
-        loginForm = new LoginForm(this, dataSource);
+        loginForm = new LoginForm(this, dataSource, foremanSource);
         application = new Application(this);
         this.getContentPane().add(loginForm);
         this.setVisible(true);
@@ -121,11 +122,13 @@ public class Main extends JFrame implements LoginListener, LogoutListener {
         // Start jobs
 
 //        DataSource dataSourceUsers = new DataSource<User>("users.txt");
-//        DataSource dataSourceWorks = new DataSource<Work>("works.txt");
+//        DataSource foremanDataSource = new DataSource<Foreman>("foremans.txt");
+//
+//        foremanDataSource.saveObject(leader);
+//        foremanDataSource.saveObject(leader2);
 
-//        dataSourceWorks.saveObject(contructionWorkOne);
-//        dataSourceWorks.saveObject(contructionWorkTwo);
 
+//        System.out.println(foremanDataSource.getListOfSourceObjects());
 //        ArrayList<Work> works = dataSourceWorks.getListOfSourceObjects();
 //        System.out.println(works);
 

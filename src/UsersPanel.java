@@ -49,27 +49,6 @@ public class UsersPanel extends JPanel implements ListActionPanelListener {
             }
         });
 
-        JButton button = new JButton("Usuń");
-        button.addActionListener(e -> {
-            ListModel<CheckListItemAbstract> model = this.list.getModel();
-            int size = model.getSize();
-            System.out.println(size);
-            ArrayList<CheckListItemAbstract> remainingItems = new ArrayList<>();
-            for (int i = 0; i < size; i++) {
-                CheckListItemAbstract item = model.getElementAt(i);
-                if (!item.isSelected()) {
-                    remainingItems.add(item);
-                }
-            }
-            System.out.println(remainingItems);
-
-            DefaultListModel<CheckListItemAbstract> newModel = new DefaultListModel<>();
-            for (CheckListItemAbstract item : remainingItems) {
-                newModel.addElement(item);
-            }
-            list.setModel(newModel);
-        });
-
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         ListActionPanel actionPanel = new ListActionPanel(this);
         JScrollPane scrollPane = new JScrollPane(this.list);
@@ -169,7 +148,6 @@ public class UsersPanel extends JPanel implements ListActionPanelListener {
                     panel.add(editButton);
 
                     editButton.addActionListener(e -> {
-                        System.out.println("edit");
 
                         LocalDate selectedDate = calendarControl.getSelectedDate();
                         String name = nameField.getText();
