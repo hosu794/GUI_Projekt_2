@@ -1,3 +1,4 @@
+import controlls.CalendarControl;
 import listeners.ListActionPanelListener;
 
 import javax.swing.*;
@@ -10,7 +11,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class ListItems extends JPanel implements ListActionPanelListener {
+public class UsersPanel extends JPanel implements ListActionPanelListener {
 
     DataSource userDataSource;
     JList list;
@@ -19,7 +20,7 @@ public class ListItems extends JPanel implements ListActionPanelListener {
     ArrayList<EmployeesDepartment> departments;
     String[] departmentNamesArray;
 
-    public ListItems() {
+    public UsersPanel() {
 
         this.userDataSource = new DataSource<User>("users.txt");
         this.departmentDataSource = new DataSource<EmployeesDepartment>("departments.txt");
@@ -229,9 +230,8 @@ public class ListItems extends JPanel implements ListActionPanelListener {
                 addWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
                 JPanel panel = new JPanel();
-                setLayout(new FlowLayout());
-
                 panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+                panel.setVisible(true);
 
                  JLabel nameLabel = new JLabel("Name: ");
                  JTextField nameField = new JTextField(20);

@@ -6,13 +6,14 @@ import javax.swing.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+
 public class Main extends JFrame implements LoginListener, LogoutListener {
 
     LoginForm loginForm;
     Application application;
 
     public Main() {
-        setSize(720, 320);
+        setSize(1000, 500);
         this.setTitle("Moja aplikacja");
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -166,7 +167,7 @@ public class Main extends JFrame implements LoginListener, LogoutListener {
         System.out.println(success);
 
         if (success) {
-            setSize(720, 320);
+            setSize(1000, 500);
             getContentPane().remove(loginForm);
             getContentPane().add(application);
             revalidate();
@@ -180,7 +181,7 @@ public class Main extends JFrame implements LoginListener, LogoutListener {
     @Override
     public void onLogout(boolean success) {
         if (success) {
-            setSize(720, 320);
+            setSize(1000, 500);
             getContentPane().remove(application);
             getContentPane().add(loginForm);
             revalidate();

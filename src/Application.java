@@ -21,14 +21,14 @@ public class Application extends JPanel   {
         gbc.gridx = 0;
         gbc.gridy = GridBagConstraints.RELATIVE;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.weightx = 0.7;
+        gbc.weightx = 0.6;
         this.add(leftColumnLayout, gbc);
 
         // Dodanie panelu drugiej kolumny do layoutu
         gbc.gridx = 1;
         gbc.gridy = GridBagConstraints.RELATIVE;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.weightx = 0.3;
+        gbc.weightx = 0.4;
         this.add(column2Panel, gbc);
 
         // Dodanie przycisku na dole
@@ -37,8 +37,6 @@ public class Application extends JPanel   {
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.weightx = 1.0;
-
-        setSize(1920, 1080);
         this.setVisible(true);
 
     }
