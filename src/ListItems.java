@@ -212,7 +212,6 @@ public class ListItems extends JPanel implements ListActionPanelListener {
                     updateWindow.setLocationRelativeTo(null);
                     updateWindow.setVisible(true);
 
-
                 });
 
 
@@ -273,26 +272,35 @@ public class ListItems extends JPanel implements ListActionPanelListener {
 
                     EmployeesDepartment foundDepartment = allDepartments.stream().filter(employeesDepartment -> employeesDepartment.getName().equals(departmentName)).findAny().get();
 
-                    User createdUser = User.createUser(name, surname, selectedDate, login, password, foundDepartment);
+                    ArrayList<User> allUsers = this.userDataSource.getListOfSourceObjects();
 
-                    System.out.println(createdUser);
+                    Optional<User> foundUser = allUsers.stream().filter(user -> user.getLogin().equals(login)).findAny();
 
-                    userDataSource.saveObject(createdUser);
-                    ListModel currentModel = this.list.getModel();
+                    if (foundUser.isPresent()) {
+                        JOptionPane.showMessageDialog(addWindow, "User z login=" + login + ", istnieje!");
+                    } else {
+                        User createdUser = User.createUser(name, surname, selectedDate, login, password, foundDepartment);
 
-                    DefaultListModel<CheckListItemAbstract> newModel = new DefaultListModel<>();
+                        System.out.println(createdUser);
 
-                    for (int i = 0; i < currentModel.getSize(); i++) {
-                        newModel.addElement((CheckListItemAbstract) currentModel.getElementAt(i));
+                        userDataSource.saveObject(createdUser);
+                        ListModel currentModel = this.list.getModel();
+
+                        DefaultListModel<CheckListItemAbstract> newModel = new DefaultListModel<>();
+
+                        for (int i = 0; i < currentModel.getSize(); i++) {
+                            newModel.addElement((CheckListItemAbstract) currentModel.getElementAt(i));
+                        }
+
+                        newModel.addElement(createdUser);
+
+                        this.list.setModel(newModel);
+
+                        JOptionPane.showMessageDialog(addWindow, "Dodano nowego Uzytkownika: " + createdUser.toString());
+
+                        addWindow.dispose();
                     }
 
-                    newModel.addElement(createdUser);
-
-                    this.list.setModel(newModel);
-
-                    JOptionPane.showMessageDialog(addWindow, "Dodano nowego Uzytkownika: " + createdUser.toString());
-
-                    addWindow.dispose();
 
                 });
 
