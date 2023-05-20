@@ -6,6 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -15,10 +16,19 @@ public class ListItems extends JPanel implements ListActionPanelListener {
     JList list;
     DataSource departmentDataSource;
 
+    ArrayList<EmployeesDepartment> departments;
+    String[] departmentNamesArray;
+
     public ListItems() {
 
         this.userDataSource = new DataSource<User>("users.txt");
         this.departmentDataSource = new DataSource<EmployeesDepartment>("departments.txt");
+
+        this.departments = this.departmentDataSource.getListOfSourceObjects();
+        this.departmentNamesArray = departments.stream()
+                .map(EmployeesDepartment::getName)
+                .toArray(String[]::new);
+
 
         ArrayList<User> users = this.userDataSource.getListOfSourceObjects();
         CheckListItemAbstract[] listItemAbstracts = users.toArray(CheckListItemAbstract[]::new);
@@ -91,26 +101,133 @@ public class ListItems extends JPanel implements ListActionPanelListener {
     @Override
     public void update() {
 
+            ListModel<CheckListItemAbstract> model = list.getModel();
+
+            ArrayList<CheckListItemAbstract> checkedUsers = new ArrayList<>();
+
+            // Checking if more than more item is checked
+            for (int i = 0; i < model.getSize(); i++) {
+                if(model.getElementAt(i).isSelected()) {
+                    checkedUsers.add(model.getElementAt(i));
+                }
+            }
+
+            if (checkedUsers.size() == 1) {
+
+                User checkedUser = (User) checkedUsers.get(0);
+
+                EventQueue.invokeLater(() -> {
+
+                    JFrame updateWindow = new JFrame("Aktualizacja pracownika");
+                    updateWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+                    JPanel panel = new JPanel();
+                    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+                    updateWindow.add(panel);
+                    updateWindow.setLayout(new FlowLayout());
+                    updateWindow.setVisible(true);
+
+                    // Initiation fields
+
+                    JLabel nameLabel = new JLabel("Name: ");
+                    JTextField nameField = new JTextField(20);
+                    JLabel surnameLabel = new JLabel("Surname");
+                    JTextField surnameField = new JTextField(20);
+                    JLabel birthDateField = new JLabel("Date");
+                    CalendarControl calendarControl = new CalendarControl();
+                    JLabel loginLabel = new JLabel("Login");
+                    JTextField loginField = new JTextField(20);
+                    JLabel passwordLabel = new JLabel("Password");
+                    JTextField passwordField = new JPasswordField(20);
+                    JComboBox<String> departmentCombo = new JComboBox<>(this.departmentNamesArray);
+                    JButton editButton = new JButton("Aktualizuj");
+
+
+                    // Setting values to field from user object
+
+                    nameField.setText(checkedUser.getName());
+                    surnameField.setText(checkedUser.getSurname());
+                    calendarControl.setDate(checkedUser.getBirthDate());
+                    loginField.setText(checkedUser.getLogin());
+                    passwordField.setText(checkedUser.getPassword());
+
+                    departmentCombo.setSelectedItem(checkedUser.getEmployeesDepartment().getName());
+
+                    panel.add(nameLabel);
+                    panel.add(nameField);
+                    panel.add(surnameField);
+                    panel.add(surnameLabel);
+                    panel.add(birthDateField);
+                    panel.add(calendarControl);
+                    panel.add(loginLabel);
+                    panel.add(loginField);
+                    panel.add(passwordLabel);
+                    panel.add(passwordField);
+                    panel.add(departmentCombo);
+                    panel.add(editButton);
+
+                    editButton.addActionListener(e -> {
+                        System.out.println("edit");
+
+                        LocalDate selectedDate = calendarControl.getSelectedDate();
+                        String name = nameField.getText();
+                        String surname = surnameField.getText();
+                        String login = loginField.getText();
+                        String password = passwordField.getText();
+                        String departmentName = (String) departmentCombo.getSelectedItem();
+
+                        ArrayList<EmployeesDepartment> allDepartments =
+                                (ArrayList<EmployeesDepartment>) this.departmentDataSource.getListOfSourceObjects();
+
+                        EmployeesDepartment foundDepartment = allDepartments.stream().filter(employeesDepartment -> employeesDepartment.getName().equals(departmentName)).findAny().get();
+
+                        ArrayList<User> users = this.userDataSource.getListOfSourceObjects();
+
+                        ArrayList<User> filteredUsers = (ArrayList<User>) users.stream()
+                                .filter(user -> !user.getLogin().equals(checkedUser.getLogin())).collect(Collectors.toList());
+
+                        User updatedUser = User.createUser(name, surname, selectedDate, login, password, foundDepartment);
+
+                        filteredUsers.add(updatedUser);
+
+                        DefaultListModel<CheckListItemAbstract> newModel = new DefaultListModel<>();
+
+                        for (int i = 0; i < filteredUsers.size(); i++) {
+                            newModel.addElement((CheckListItemAbstract) filteredUsers.get(i));
+                        }
+
+                        this.list.setModel(newModel);
+
+                        this.userDataSource.updateListOfUpdate(filteredUsers);
+
+                        JOptionPane.showMessageDialog(this, "Zaktualizowano User'a", "Powiadomienie", JOptionPane.INFORMATION_MESSAGE);
+
+                        updateWindow.dispose();
+
+                    });
+
+                    updateWindow.getContentPane().add(panel);
+                    updateWindow.pack();
+                    updateWindow.setLocationRelativeTo(null);
+                    updateWindow.setVisible(true);
+
+
+                });
+
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Zaznacz jeden element!", "Powiadomienie", JOptionPane.INFORMATION_MESSAGE);
+            }
+
     }
 
     @Override
     public void add() {
             EventQueue.invokeLater(() -> {
 
-                ArrayList<EmployeesDepartment> departments = this.departmentDataSource.getListOfSourceObjects();
-                String[] departmentNamesArray = departments.stream()
-                        .map(EmployeesDepartment::getName)
-                        .toArray(String[]::new);
-
                 JFrame addWindow = new JFrame("Dodawanie pracownika");
                 addWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-                try
-                {
-                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
                 JPanel panel = new JPanel();
                 setLayout(new FlowLayout());
@@ -127,7 +244,7 @@ public class ListItems extends JPanel implements ListActionPanelListener {
                  JTextField loginField = new JTextField(20);
                  JLabel passwordLabel = new JLabel("Password");
                  JPasswordField passwordField = new JPasswordField(20);
-                 JComboBox<String> departmentCombo = new JComboBox<>(departmentNamesArray);
+                 JComboBox<String> departmentCombo = new JComboBox<>(this.departmentNamesArray);
 
                 panel.add(nameLabel);
                 panel.add(nameField);
@@ -157,6 +274,8 @@ public class ListItems extends JPanel implements ListActionPanelListener {
                     EmployeesDepartment foundDepartment = allDepartments.stream().filter(employeesDepartment -> employeesDepartment.getName().equals(departmentName)).findAny().get();
 
                     User createdUser = User.createUser(name, surname, selectedDate, login, password, foundDepartment);
+
+                    System.out.println(createdUser);
 
                     userDataSource.saveObject(createdUser);
                     ListModel currentModel = this.list.getModel();

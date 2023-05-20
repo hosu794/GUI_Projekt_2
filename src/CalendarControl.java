@@ -90,6 +90,27 @@ public class CalendarControl extends JPanel {
         }
     }
 
+    public void setDate(LocalDate date) {
+        selectedDate = date;
+        monthSpinner.setValue(selectedDate.getMonthValue());
+        yearSpinner.setValue(selectedDate.getYear());
+
+        for (int row = 0; row < 6; row++) {
+            for (int col = 0; col < 7; col++) {
+                JButton dayButton = dayButtons[row][col];
+                if (dayButton.getText().isEmpty()) {
+                    continue;
+                }
+                int dayOfMonth = Integer.parseInt(dayButton.getText());
+                if (dayOfMonth == selectedDate.getDayOfMonth()) {
+                    dayButton.setSelected(true);
+                } else {
+                    dayButton.setSelected(false);
+                }
+            }
+        }
+    }
+
     public LocalDate getSelectedDate() {
         return selectedDate;
     }

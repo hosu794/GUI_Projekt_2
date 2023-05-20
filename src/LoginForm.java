@@ -77,19 +77,16 @@ public class LoginForm extends JPanel implements ActionListener {
                 .filter(user -> user.getLogin().equals(userValue) && user.getPassword().equals(passValue))
                 .findFirst();
 
-//        if (loginListener != null) {
-//            CurrentUser.setCurrentUser(result.get());
-//            loginListener.onLogin(true);
-//        }
-
          if (result.isPresent()) {
             User user = result.get();
-
-            CurrentUser.setCurrentUser(user);
 
             if (loginListener != null) {
                 loginListener.onLogin(true);
             }
+
+            LoggedInUser.getInstance().setUser(user);
+
+            ListActionPanel.updateLoggedInUser();
 
             JOptionPane.showMessageDialog(this, "Zalogowano pomyślnieś");
 
