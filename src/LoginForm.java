@@ -94,7 +94,10 @@ public class LoginForm extends JPanel implements ActionListener {
                 loginListener.onLogin(true);
             }
 
-            LoggedInUser.getInstance().setUser(user);
+             textField1.setText("");
+             textField2.setText("");
+
+             LoggedInUser.getInstance().setUser(user);
 
             ListActionPanel.updateLoggedInUser();
 
@@ -110,6 +113,9 @@ public class LoginForm extends JPanel implements ActionListener {
                 if (loginListener != null) {
                     loginListener.onLogin(true);
                 }
+
+                textField1.setText("");
+                textField2.setText("");
 
                 LoggedInUser.getInstance().setUser(foreman);
                 ListActionPanel.updateLoggedInUser();
