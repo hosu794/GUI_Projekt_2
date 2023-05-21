@@ -37,17 +37,7 @@ public class UsersPanel extends JPanel implements ListActionPanelListener {
 
         this.list.setCellRenderer(new CheckListRenderer());
         this.list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        this.list.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent event) {
-                JList list = (JList) event.getSource();
-                int index = list.locationToIndex(event.getPoint());
-                CheckListItemAbstract item = (CheckListItemAbstract) list.getModel()
-                        .getElementAt(index);
-                item.setSelected(!item.isSelected());
-                list.repaint(list.getCellBounds(index, index));
-            }
-        });
+        this.list.addMouseListener(new CheckListMouseEvent());
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         ListActionPanel actionPanel = new ListActionPanel(this);
@@ -98,7 +88,7 @@ public class UsersPanel extends JPanel implements ListActionPanelListener {
 
                 EventQueue.invokeLater(() -> {
 
-                    JFrame updateWindow = new JFrame("Aktualizacja pracownika");
+                    JFrame updateWindow = new JFrame("Aktualizacja uzytkownika");
                     updateWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
                     JPanel panel = new JPanel();
@@ -204,7 +194,7 @@ public class UsersPanel extends JPanel implements ListActionPanelListener {
     public void add() {
             EventQueue.invokeLater(() -> {
 
-                JFrame addWindow = new JFrame("Dodawanie pracownika");
+                JFrame addWindow = new JFrame("Dodawanie uzytkownika");
                 addWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
                 JPanel panel = new JPanel();
@@ -234,10 +224,10 @@ public class UsersPanel extends JPanel implements ListActionPanelListener {
                 panel.add(passwordLabel);
                 panel.add(passwordField);
                 panel.add(departmentCombo);
-                JButton getDateButton = new JButton("Utwórz");
-                panel.add(getDateButton);
+                JButton createButton = new JButton("Create");
+                panel.add(createButton);
 
-                getDateButton.addActionListener(e -> {
+                createButton.addActionListener(e -> {
                     LocalDate selectedDate = birthDateField.getSelectedDate();
                     String name = nameField.getText();
                     String surname = surnameField.getText();

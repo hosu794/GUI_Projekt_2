@@ -26,7 +26,7 @@ public class LeftColumnLayout extends JPanel {
            ChangeCardLayoutPanel foremanChangeLayoutPanel = new ChangeCardLayoutPanel("Brygadzista", "Panel 4", changePageLayoutListener);
            this.add(foremanChangeLayoutPanel);
 
-           ChangeCardLayoutPanel brigadeChangeLayoutPanel = new ChangeCardLayoutPanel("Brygadzista", "Panel 5", changePageLayoutListener);
+           ChangeCardLayoutPanel brigadeChangeLayoutPanel = new ChangeCardLayoutPanel("Brygada", "Panel 5", changePageLayoutListener);
            this.add(brigadeChangeLayoutPanel);
 
            ChangeCardLayoutPanel jobChangeLayoutPanel = new ChangeCardLayoutPanel("Zlecenie", "Panel 6", changePageLayoutListener);

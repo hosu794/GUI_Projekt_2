@@ -5,7 +5,7 @@ import java.util.List;
 import java.time.LocalDate;
 
 
-public abstract class Employee extends CheckListItemAbstract implements Comparable<Employee>, Serializable  {
+public class Employee extends CheckListItemAbstract implements Comparable<Employee>, Serializable  {
 
     private static final long serialVersionUID = 2L;
 
@@ -58,7 +58,7 @@ public abstract class Employee extends CheckListItemAbstract implements Comparab
                 "name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", birthDate=" + birthDate +
-                ", employeesDepartment=" + employeesDepartment +
+                ", employeesDepartment=" + employeesDepartment.getName() +
                 '}';
     }
 }

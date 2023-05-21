@@ -34,14 +34,13 @@ public class ListActionPanel extends JPanel {
 
         userInfoLabel = new JLabel("Witaj");
         add(userInfoLabel);
-
     }
 
     public static void updateLoggedInUser() {
 
         User loggedInUser = LoggedInUser.getInstance().getUser();
         if (loggedInUser != null) {
-            userInfoLabel.setText("Zalogowany użytkownik: " + loggedInUser.getLogin());
+            userInfoLabel.setText("Zalogowany użytkownik: " + loggedInUser.getInitial());
         } else {
             userInfoLabel.setText("Brak zalogowanego użytkownika");
         }

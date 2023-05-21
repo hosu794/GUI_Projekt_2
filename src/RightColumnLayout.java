@@ -16,8 +16,8 @@ public class RightColumnLayout extends JPanel implements ChangePageLayoutListene
 
         // Komponenty w drugiej kolumnie
         this.add(new JLabel("Panel 1"), "Panel 1");
-        this.add(new UsersPanel(), "Panel 2");
-        this.add(new JLabel("Panel 3"), "Panel 3");
+        this.add(new EmployeePanel(), "Panel 2");
+        this.add(new UsersPanel(), "Panel 3");
         this.add(new JLabel("Panel 4"), "Panel 4");
         this.add(new JLabel("Panel 5"), "Panel 5");
         this.add(new JLabel("Panel 6"), "Panel 6");
