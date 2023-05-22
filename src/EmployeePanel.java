@@ -38,7 +38,7 @@ public class EmployeePanel extends JPanel implements ListActionPanelListener {
         this.list.addMouseListener(new CheckListMouseEvent());
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        ListActionPanel actionPanel = new ListActionPanel(this);
+        BasicActionList actionPanel = new BasicActionList(this);
         JScrollPane scrollPane = new JScrollPane(this.list);
         add(actionPanel);
         add(scrollPane);

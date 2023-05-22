@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.xml.crypto.Data;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -77,7 +76,7 @@ public class ChangeCurrentUserPassword extends JPanel {
                            this.foremanDataSource.updateListOfUpdate(updatedForemen);
 
                            LoggedInUser.getInstance().setUser(foreman);
-                           ListActionPanel.updateLoggedInUser();
+                            DisplayCurrentUser.updateLoggedInUser();
 
                            JOptionPane.showMessageDialog(this, "Zmieniono hasło dla Brygadzisty", "Powiadomienie", JOptionPane.INFORMATION_MESSAGE);
                            changePasswordWindow.dispose();
@@ -100,7 +99,7 @@ public class ChangeCurrentUserPassword extends JPanel {
                             this.userDataSource.updateListOfUpdate(updatedUsers);
 
                             LoggedInUser.getInstance().setUser(user);
-                            ListActionPanel.updateLoggedInUser();
+                            DisplayCurrentUser.updateLoggedInUser();
 
                             JOptionPane.showMessageDialog(this, "Zmieniono hasło dla Uzytkownika", "Powiadomienie", JOptionPane.INFORMATION_MESSAGE);
                             changePasswordWindow.dispose();

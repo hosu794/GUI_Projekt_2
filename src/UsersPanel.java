@@ -3,8 +3,6 @@ import listeners.ListActionPanelListener;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -40,7 +38,7 @@ public class UsersPanel extends JPanel implements ListActionPanelListener {
         this.list.addMouseListener(new CheckListMouseEvent());
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        ListActionPanel actionPanel = new ListActionPanel(this);
+        BasicActionList actionPanel = new BasicActionList(this);
         JScrollPane scrollPane = new JScrollPane(this.list);
         add(actionPanel);
         add(scrollPane);

@@ -2,12 +2,11 @@ import listeners.ListActionPanelListener;
 
 import javax.swing.*;
 
-public class ListActionPanel extends JPanel {
+public class BasicActionList extends JPanel {
     
     ListActionPanelListener listActionPanelListener;
-    static private JLabel userInfoLabel;
 
-    public ListActionPanel(ListActionPanelListener listActionPanelListener) {
+    public BasicActionList(ListActionPanelListener listActionPanelListener) {
 
         this.listActionPanelListener = listActionPanelListener;
 
@@ -32,7 +31,29 @@ public class ListActionPanel extends JPanel {
         });
         add(deleteButton);
 
-        userInfoLabel = new JLabel("Witaj");
+        DisplayCurrentUser displayCurrentUser = new DisplayCurrentUser();
+        add(displayCurrentUser);
+    }
+
+//    public static void updateLoggedInUser() {
+//
+//        User loggedInUser = LoggedInUser.getInstance().getUser();
+//        if (loggedInUser != null) {
+//            userInfoLabel.setText("Zalogowany użytkownik: " + loggedInUser.getInitial());
+//        } else {
+//            userInfoLabel.setText("Brak zalogowanego użytkownika");
+//        }
+//    }
+}
+
+class DisplayCurrentUser extends JPanel {
+
+    static private JLabel userInfoLabel;
+
+    public DisplayCurrentUser() {
+        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        setVisible(true);
+        userInfoLabel = new JLabel();
         add(userInfoLabel);
     }
 

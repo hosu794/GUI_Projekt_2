@@ -99,7 +99,7 @@ public class LoginForm extends JPanel implements ActionListener {
 
              LoggedInUser.getInstance().setUser(user);
 
-            ListActionPanel.updateLoggedInUser();
+             DisplayCurrentUser.updateLoggedInUser();
 
             JOptionPane.showMessageDialog(this, "Zalogowano pomyślnieś User'a");
 
@@ -118,7 +118,7 @@ public class LoginForm extends JPanel implements ActionListener {
                 textField2.setText("");
 
                 LoggedInUser.getInstance().setUser(foreman);
-                ListActionPanel.updateLoggedInUser();
+                DisplayCurrentUser.updateLoggedInUser();
 
                 JOptionPane.showMessageDialog(this, "Zalogowano pomyślnieś Foreman'a");
 
