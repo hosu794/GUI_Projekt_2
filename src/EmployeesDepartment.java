@@ -5,11 +5,9 @@ import java.util.LinkedList;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class EmployeesDepartment implements Serializable {
+public class EmployeesDepartment extends CheckListItemAbstract implements Serializable {
 
     private static final long serialVersionUID = 3L;
-
-
     static public LinkedList<String> departmentsNames = new LinkedList<String>();
 
     private static long currentId = 1;
