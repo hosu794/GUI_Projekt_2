@@ -38,6 +38,7 @@ public class DepartmentEmployeeBasicActionList extends JPanel {
 
         DisplayCurrentUser displayCurrentUser = new DisplayCurrentUser();
         add(displayCurrentUser);
+
     }
 
 }

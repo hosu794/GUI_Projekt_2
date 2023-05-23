@@ -267,7 +267,6 @@ public class UsersPanel extends JPanel implements ListActionPanelListener {
                         addWindow.dispose();
                     }
 
-
                 });
 
                 addWindow.getContentPane().add(panel);
