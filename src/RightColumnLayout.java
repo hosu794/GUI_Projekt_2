@@ -18,7 +18,7 @@ public class RightColumnLayout extends JPanel implements ChangePageLayoutListene
         this.add(new EmployeesDepartmentPanel(), "Panel 1");
         this.add(new EmployeePanel(), "Panel 2");
         this.add(new UsersPanel(), "Panel 3");
-        this.add(new JLabel("Panel 4"), "Panel 4");
+        this.add(new ForemanPanel(), "Panel 4");
         this.add(new JLabel("Panel 5"), "Panel 5");
         this.add(new JLabel("Panel 6"), "Panel 6");
         this.add(new JLabel("Panel 7"), "Panel 7");
