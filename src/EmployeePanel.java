@@ -16,18 +16,11 @@ public class EmployeePanel extends JPanel implements ListActionPanelListener {
 
     DataSource departmentDataSource;
 
-    ArrayList<EmployeesDepartment> departments;
-
-    String[] departmentNamesArray;
-
     public EmployeePanel() {
         this.employeeDataSource = new DataSource<Employee>("employees.txt");
         this.departmentDataSource = new DataSource<EmployeesDepartment>("departments.txt");
 
-        this.departments = this.departmentDataSource.getListOfSourceObjects();
-        this.departmentNamesArray = departments.stream()
-                .map(EmployeesDepartment::getName)
-                .toArray(String[]::new);
+        ArrayList<EmployeesDepartment> departments = this.departmentDataSource.getListOfSourceObjects();
 
         ArrayList<Employee> employees = this.employeeDataSource.getListOfSourceObjects();
         CheckListItemAbstract[] listItemAbstracts = employees.toArray(CheckListItemAbstract[]::new);
@@ -68,8 +61,14 @@ public class EmployeePanel extends JPanel implements ListActionPanelListener {
 
     @Override
     public void update() {
+        ArrayList<EmployeesDepartment> departments = this.departmentDataSource.getListOfSourceObjects();
+
         ListModel<CheckListItemAbstract> model = list.getModel();
         ArrayList<CheckListItemAbstract> checkedEmployees = new ArrayList<>();
+        String[] departmentNamesArray = departments.stream()
+                .map(EmployeesDepartment::getName)
+                .toArray(String[]::new);
+
 
         for (int i = 0; i < model.getSize(); i++) {
             if (model.getElementAt(i).isSelected()) {
@@ -99,7 +98,7 @@ public class EmployeePanel extends JPanel implements ListActionPanelListener {
                 CalendarControl calendarControl = new CalendarControl();
 
                 JLabel departmentLabel = new JLabel("Department");
-                JComboBox<String> departmentCombo = new JComboBox<>(this.departmentNamesArray);
+                JComboBox<String> departmentCombo = new JComboBox<>(departmentNamesArray);
 
                 JButton editButton = new JButton("Update");
 
@@ -182,6 +181,12 @@ public class EmployeePanel extends JPanel implements ListActionPanelListener {
             JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
             panel.setVisible(true);
+
+            ArrayList<EmployeesDepartment> departments = this.departmentDataSource.getListOfSourceObjects();
+            String[] departmentNamesArray = departments.stream()
+                    .map(EmployeesDepartment::getName)
+                    .toArray(String[]::new);
+
 
             JLabel nameLabel = new JLabel("Name");
             JTextField nameField = new JTextField(20);

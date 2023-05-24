@@ -15,18 +15,11 @@ public class UsersPanel extends JPanel implements ListActionPanelListener {
     JList list;
     DataSource departmentDataSource;
 
-    ArrayList<EmployeesDepartment> departments;
-    String[] departmentNamesArray;
-
     public UsersPanel() {
 
         this.userDataSource = new DataSource<User>("users.txt");
         this.departmentDataSource = new DataSource<EmployeesDepartment>("departments.txt");
 
-        this.departments = this.departmentDataSource.getListOfSourceObjects();
-        this.departmentNamesArray = departments.stream()
-                .map(EmployeesDepartment::getName)
-                .toArray(String[]::new);
 
 
         ArrayList<User> users = this.userDataSource.getListOfSourceObjects();
@@ -69,6 +62,11 @@ public class UsersPanel extends JPanel implements ListActionPanelListener {
     @Override
     public void update() {
 
+            ArrayList<EmployeesDepartment> departments = this.departmentDataSource.getListOfSourceObjects();
+            String[] departmentNamesArray = departments.stream()
+                    .map(EmployeesDepartment::getName)
+                    .toArray(String[]::new);
+
             ListModel<CheckListItemAbstract> model = list.getModel();
 
             ArrayList<CheckListItemAbstract> checkedUsers = new ArrayList<>();
@@ -108,7 +106,7 @@ public class UsersPanel extends JPanel implements ListActionPanelListener {
                     JTextField loginField = new JTextField(20);
                     JLabel passwordLabel = new JLabel("Password");
                     JTextField passwordField = new JPasswordField(20);
-                    JComboBox<String> departmentCombo = new JComboBox<>(this.departmentNamesArray);
+                    JComboBox<String> departmentCombo = new JComboBox<>(departmentNamesArray);
                     JButton editButton = new JButton("Aktualizuj");
 
 
@@ -160,8 +158,8 @@ public class UsersPanel extends JPanel implements ListActionPanelListener {
 
                         DefaultListModel<CheckListItemAbstract> newModel = new DefaultListModel<>();
 
-                        for (int i = 0; i < filteredUsers.size(); i++) {
-                            newModel.addElement((CheckListItemAbstract) filteredUsers.get(i));
+                        for (User filteredUser : filteredUsers) {
+                            newModel.addElement((CheckListItemAbstract) filteredUser);
                         }
 
                         this.list.setModel(newModel);
@@ -192,6 +190,11 @@ public class UsersPanel extends JPanel implements ListActionPanelListener {
     public void add() {
             EventQueue.invokeLater(() -> {
 
+                ArrayList<EmployeesDepartment> departments = this.departmentDataSource.getListOfSourceObjects();
+                String[] departmentNamesArray = departments.stream()
+                        .map(EmployeesDepartment::getName)
+                        .toArray(String[]::new);
+
                 JFrame addWindow = new JFrame("Dodawanie uzytkownika");
                 addWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -209,7 +212,7 @@ public class UsersPanel extends JPanel implements ListActionPanelListener {
                  JTextField loginField = new JTextField(20);
                  JLabel passwordLabel = new JLabel("Password");
                  JPasswordField passwordField = new JPasswordField(20);
-                 JComboBox<String> departmentCombo = new JComboBox<>(this.departmentNamesArray);
+                 JComboBox<String> departmentCombo = new JComboBox<>(departmentNamesArray);
 
                 panel.add(nameLabel);
                 panel.add(nameField);

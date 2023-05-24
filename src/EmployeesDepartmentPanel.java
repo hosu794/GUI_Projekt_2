@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class EmployeesDepartmentPanel extends JPanel implements EmployeesDepartmentListActionPanelListener {
 
@@ -85,15 +86,110 @@ public class EmployeesDepartmentPanel extends JPanel implements EmployeesDepartm
                     "Bład usuwania", JOptionPane.ERROR_MESSAGE);
         } else {
 
+            ArrayList<CheckListItemAbstract> remainingItems = new ArrayList<>();
+
+            ArrayList<EmployeesDepartment> updatedDepartments = (ArrayList<EmployeesDepartment>) IntStream.range(0, size)
+                    .mapToObj(model::getElementAt)
+                    .filter(item -> !item.isSelected())
+                    .peek(remainingItems::add)
+                    .map(item -> (EmployeesDepartment) item)
+                    .collect(Collectors.toList());
+
+            this.departmentDataSource.updateListOfUpdate(updatedDepartments);
+
+            DefaultListModel<CheckListItemAbstract> newModel = new DefaultListModel<>();
+            remainingItems.forEach(newModel::addElement);
+            this.list.setModel(newModel);
         }
 
-
-        //Sprawdzenie czy jakis Pracownik lub Uzytkownik jest przypisany do tej brygady.
     }
 
     @Override
     public void update() {
 
+
+        ListModel<CheckListItemAbstract> model = list.getModel();
+        ArrayList<CheckListItemAbstract> checkedDepartments = new ArrayList<>();
+
+        for (int i = 0; i < model.getSize(); i++) {
+            if(model.getElementAt(i).isSelected()) {
+                checkedDepartments.add(model.getElementAt(i));
+            }
+        }
+
+        if (checkedDepartments.size() ==1 ) {
+            EmployeesDepartment employeesDepartment = (EmployeesDepartment) checkedDepartments.get(0);
+
+            EventQueue.invokeLater(() -> {
+                JFrame updateWindow = new JFrame("Aktualizacja działu pracowników");
+                updateWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+                JPanel panel = new JPanel();
+                panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+                updateWindow.add(panel);
+                updateWindow.setLayout(new FlowLayout());
+                updateWindow.setVisible(true);
+
+                // Initiation fields
+                JLabel nameLabel = new JLabel("Name: ");
+                JTextField nameField = new JTextField(20);
+
+                JButton editButton = new JButton("Aktualizuj");
+
+                nameField.setText(employeesDepartment.getName());
+
+                panel.add(nameLabel);
+                panel.add(nameField);
+                panel.add(editButton);
+
+                editButton.addActionListener(e -> {
+                    String newName = nameField.getText();
+
+                    // Check if department with given name not exist
+                    ArrayList<EmployeesDepartment> allDepartments = this.departmentDataSource.getListOfSourceObjects();
+                    Optional<EmployeesDepartment> foundDepartment = allDepartments.stream()
+                            .filter(department -> department.getName().equals(newName)).findFirst();
+
+                    if (foundDepartment.isPresent()) {
+                        JOptionPane.showMessageDialog(this, "Istnieje department z taką nazwą",
+                                "Błąd edycji", JOptionPane.ERROR_MESSAGE);
+                    } else {
+
+                        // Replace object with changed object
+                        ArrayList<EmployeesDepartment> filteredDepartments = (ArrayList<EmployeesDepartment>) allDepartments.stream()
+                                .filter(department -> !department.getName().equals(employeesDepartment.getName())).collect(Collectors.toList());
+                        // Check if new
+                        employeesDepartment.setName(newName);
+
+                        filteredDepartments.add(employeesDepartment);
+
+                        DefaultListModel<CheckListItemAbstract> newModel = new DefaultListModel<>();
+
+                        for (int i = 0; i < filteredDepartments.size(); i++) {
+                            newModel.addElement((CheckListItemAbstract) filteredDepartments.get(i));
+                        }
+
+                        this.list.setModel(newModel);
+
+                        this.departmentDataSource.updateListOfUpdate(filteredDepartments);
+
+                        JOptionPane.showMessageDialog(this, "Zaktualizowano department", "Powiadomienie", JOptionPane.INFORMATION_MESSAGE);
+
+                        updateWindow.dispose();
+
+                    }
+
+                });
+
+                updateWindow.getContentPane().add(panel);
+                updateWindow.pack();
+                updateWindow.setLocationRelativeTo(null);
+                updateWindow.setVisible(true);
+            });
+        } else {
+            JOptionPane.showMessageDialog(this, "Zaznacz jeden element do edycji!", "Błąd edycji", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     @Override
