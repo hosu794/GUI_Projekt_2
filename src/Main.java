@@ -26,7 +26,6 @@ public class Main extends JFrame implements LoginListener, LogoutListener {
         this.getContentPane().add(loginForm);
         this.setVisible(true);
 
-
     }
     public static void main(String[] args) {
 

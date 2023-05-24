@@ -1,6 +1,7 @@
 import listeners.EmployeesDepartmentListActionPanelListener;
 
 import javax.swing.*;
+import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -11,10 +12,17 @@ import java.util.stream.Collectors;
 public class EmployeesDepartmentPanel extends JPanel implements EmployeesDepartmentListActionPanelListener {
 
     DataSource departmentDataSource;
+    DataSource userDataSource;
+    DataSource foremanDataSource;
+    DataSource employeeDataSource;
     JList list;
 
     public EmployeesDepartmentPanel() {
         this.departmentDataSource = new DataSource<EmployeesDepartment>("departments.txt");
+        this.userDataSource = new DataSource("users.txt");
+        this.foremanDataSource = new DataSource<Foreman>("foremans.txt");
+
+        this.employeeDataSource = new DataSource("employees.txt");
         ArrayList<EmployeesDepartment> departments = this.departmentDataSource.getListOfSourceObjects();
 
         CheckListItemAbstract[] listItemAbstracts = departments.toArray(CheckListItemAbstract[]::new);
@@ -33,7 +41,54 @@ public class EmployeesDepartmentPanel extends JPanel implements EmployeesDepartm
 
     @Override
     public void delete() {
+        ListModel<CheckListItemAbstract> model = list.getModel();
+        int size = model.getSize();
 
+        ArrayList<CheckListItemAbstract> departmentsToDelete = new ArrayList<>();
+
+        for (int i = 0; i < model.getSize(); i++) {
+            if (model.getElementAt(i).isSelected()) {
+                departmentsToDelete.add(model.getElementAt(i));
+            }
+        }
+
+        int numberOfUse = 0;
+
+        for (int i = 0; i < departmentsToDelete.size(); i++) {
+
+            EmployeesDepartment department = (EmployeesDepartment) departmentsToDelete.get(i);
+            String departmentName = department.getName();
+
+            ArrayList<Employee> allEmployees = this.employeeDataSource.getListOfSourceObjects();
+
+            int numberOfUsedDepartmentInEmployees = (int) allEmployees.stream()
+                    .filter(employee -> employee.getEmployeesDepartment().getName().equals(departmentName)).count();
+            numberOfUse = numberOfUse + numberOfUsedDepartmentInEmployees;
+
+            ArrayList<User> allUsers = this.userDataSource.getListOfSourceObjects();
+
+            int numberOfUsedDepartmentInUsers = (int) allUsers.stream()
+                    .filter(user -> user.getEmployeesDepartment().getName().equals(departmentName)).count();
+
+            numberOfUse = numberOfUse + numberOfUsedDepartmentInUsers;
+
+            ArrayList<Foreman> allForemen = this.foremanDataSource.getListOfSourceObjects();
+
+            int numberOfUsedDepartmentInForeman = (int) allForemen.stream()
+                    .filter(foreman -> foreman.getEmployeesDepartment().getName().equals(departmentName)).count();
+
+            numberOfUse = numberOfUse + numberOfUsedDepartmentInForeman;
+        }
+
+        if (numberOfUse != 0) {
+            JOptionPane.showMessageDialog(this, "Istnieje obiekt, który uzywa tego departmanetu",
+                    "Bład usuwania", JOptionPane.ERROR_MESSAGE);
+        } else {
+
+        }
+
+
+        //Sprawdzenie czy jakis Pracownik lub Uzytkownik jest przypisany do tej brygady.
     }
 
     @Override
