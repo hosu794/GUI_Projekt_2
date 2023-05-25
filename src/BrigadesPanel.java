@@ -122,18 +122,12 @@ public class BrigadesPanel extends JPanel implements ListActionPanelListener {
                         Employee employee = (Employee) employeesList.getModel().getElementAt(j);
 
                         Optional<Employee> foundEmployee = checkedBrigade.getEmployeeList().stream()
-                                .filter(e -> Objects.equals(e.getName(),
-                                        employee.getName()) &&
+                                .filter(e -> e.getName().equals(employee.getName()) &&
                                         e.getSurname().equals(employee.getSurname()))
                                 .findFirst();
 
-                        if (foundEmployee.isPresent()) {
-                            employee.setSelected(true);
-                            newModelFromBrigadeEmployees.addElement((CheckListItemAbstract) employee);
-                        } else {
-                            employee.setSelected(false);
-                            newModelFromBrigadeEmployees.addElement((CheckListItemAbstract) employee);
-                        }
+                        employee.setSelected(foundEmployee.isPresent());
+                        newModelFromBrigadeEmployees.addElement(employee);
                     }
 
                     employeesList.setModel(newModelFromBrigadeEmployees);
@@ -149,10 +143,57 @@ public class BrigadesPanel extends JPanel implements ListActionPanelListener {
 
                     panel.add(editButton);
 
+                    editButton.addActionListener(e -> {
+
+                        String foremanLogin = (String) foremenCombo.getSelectedItem();
+
+                        ListModel<CheckListItemAbstract> newModelEmployees = employeesList.getModel();
+                        ArrayList<Employee> checkedEmployees = new ArrayList<>();
+
+                        for (int i = 0; i < newModelEmployees.getSize(); i++) {
+                            if (newModelEmployees.getElementAt(i).isSelected()) checkedEmployees.add((Employee) newModelEmployees.getElementAt(i));
+                        }
+
+                        ArrayList<Foreman> allForemen = this.foremenDataSource.getListOfSourceObjects();
+                        Optional<Foreman> foundForeman = allForemen.stream()
+                                .filter(f -> f.getLogin().equals(foremanLogin)).findFirst();
+
+                        if (foundForeman.isPresent()) {
+                            Foreman foreman = foundForeman.get();
+
+                            ArrayList<Brigade> allBrigades = this.brigadeDataSource.getListOfSourceObjects();
+
+                            ArrayList<Brigade> filteredBrigades = (ArrayList<Brigade>) allBrigades.stream()
+                                    .filter(brigade -> !brigade.getName().equals(checkedBrigade.getName())).collect(Collectors.toList());
+
+
+                            Brigade newBrigade = new Brigade(nameField.getText(), foreman);
+                            newBrigade.setEmployeeList(checkedEmployees);
+
+                            filteredBrigades.add(newBrigade);
+
+                            DefaultListModel<CheckListItemAbstract> newModel = new DefaultListModel<>();
+
+                            for (Brigade filteredBrigade : filteredBrigades) {
+                                newModel.addElement((CheckListItemAbstract) filteredBrigade);
+                            }
+
+                            this.brigadeDataSource.saveObject(filteredBrigades);
+
+                            this.list.setModel(newModel);
+
+                            JOptionPane.showMessageDialog(this, "Zaktualizowano Brygadę", "Powiadomienie", JOptionPane.INFORMATION_MESSAGE);
+
+                            updateFrame.dispose();
+                        }
+
+                    });
+
                     updateFrame.getContentPane().add(panel);
                     updateFrame.pack();
                     updateFrame.setLocationRelativeTo(null);
                     updateFrame.setVisible(true);
+
 
                 });
 
