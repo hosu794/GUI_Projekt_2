@@ -7,6 +7,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class JobsPanel extends JPanel implements JobListActionPanelListener {
 
@@ -41,7 +42,23 @@ public class JobsPanel extends JPanel implements JobListActionPanelListener {
 
     @Override
     public void delete() {
+        ListModel<CheckListItemAbstract> model = list.getModel();
+        int size = model.getSize();
 
+        ArrayList<CheckListItemAbstract> remainingItems = new ArrayList<>();
+
+        ArrayList<Job> updatedBrigades = (ArrayList<Job>) IntStream.range(0, size)
+                .mapToObj(model::getElementAt)
+                .filter(item -> !item.isSelected())
+                .peek(remainingItems::add)
+                .map(item -> (Job) item)
+                .collect(Collectors.toList());
+
+        this.jobDataSource.updateListOfUpdate(updatedBrigades);
+
+        DefaultListModel<CheckListItemAbstract> newModel = new DefaultListModel<>();
+        remainingItems.forEach(newModel::addElement);
+        list.setModel(newModel);
     }
 
     @Override
