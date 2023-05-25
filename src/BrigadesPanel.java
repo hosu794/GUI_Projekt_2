@@ -5,6 +5,7 @@ import javax.xml.crypto.Data;
 import java.awt.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -64,7 +65,100 @@ public class BrigadesPanel extends JPanel implements ListActionPanelListener {
 
     @Override
     public void update() {
+        ListModel<CheckListItemAbstract> model = this.list.getModel();
 
+        ArrayList<CheckListItemAbstract> checkedBrigades = new ArrayList<>();
+
+        for (int i = 0; i < model.getSize(); i++) {
+            if (model.getElementAt(i).isSelected()) checkedBrigades.add(model.getElementAt(i));
+        }
+
+        if (checkedBrigades.size() == 1) {
+                Brigade checkedBrigade = (Brigade) checkedBrigades.get(0);
+
+                EventQueue.invokeLater(() -> {
+                    JFrame updateFrame = new JFrame("Aktualizacja brygady");
+                    updateFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+                    JPanel panel = new JPanel();
+                    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+                    updateFrame.add(panel);
+                    updateFrame.setLayout(new FlowLayout());
+                    updateFrame.setVisible(true);
+
+                    ArrayList<Foreman> foremen = this.foremenDataSource.getListOfSourceObjects();
+                    String[] foremenNames = foremen.stream()
+                            .map(Foreman::getLogin)
+                            .toArray(String[]::new);
+
+                    ArrayList<Employee> allEmployees = this.employeeDataSource.getListOfSourceObjects();
+
+                    // Create components
+
+                    JLabel nameLabel = new JLabel("Name: ");
+                    JTextField nameField = new JTextField(20);
+
+                    JLabel foremenLabel = new JLabel("Foremen: ");
+                    JComboBox<String> foremenCombo = new JComboBox<>(foremenNames);
+
+                    JLabel employeesLabel = new JLabel("Employees: ");
+                    CheckListItemAbstract[] listItemAbstracts = allEmployees.toArray(CheckListItemAbstract[]::new);
+                    JList employeesList = new JList(listItemAbstracts);
+
+                    employeesList.setCellRenderer(new CheckListRenderer());
+                    employeesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                    employeesList.addMouseListener(new CheckListMouseEvent());
+
+                    JButton editButton = new JButton("Edit");
+
+                    nameField.setText(checkedBrigade.getName());
+                    foremenCombo.setSelectedItem(checkedBrigade.getForeman().getName());
+
+                    DefaultListModel<CheckListItemAbstract> newModelFromBrigadeEmployees = new DefaultListModel<>();
+
+                    for (int j = 0; j < employeesList.getModel().getSize(); j++) {
+
+                        Employee employee = (Employee) employeesList.getModel().getElementAt(j);
+
+                        Optional<Employee> foundEmployee = checkedBrigade.getEmployeeList().stream()
+                                .filter(e -> Objects.equals(e.getName(),
+                                        employee.getName()) &&
+                                        e.getSurname().equals(employee.getSurname()))
+                                .findFirst();
+
+                        if (foundEmployee.isPresent()) {
+                            employee.setSelected(true);
+                            newModelFromBrigadeEmployees.addElement((CheckListItemAbstract) employee);
+                        } else {
+                            employee.setSelected(false);
+                            newModelFromBrigadeEmployees.addElement((CheckListItemAbstract) employee);
+                        }
+                    }
+
+                    employeesList.setModel(newModelFromBrigadeEmployees);
+
+                    panel.add(nameLabel);
+                    panel.add(nameField);
+
+                    panel.add(foremenLabel);
+                    panel.add(foremenCombo);
+
+                    panel.add(employeesLabel);
+                    panel.add(new JScrollPane(employeesList));
+
+                    panel.add(editButton);
+
+                    updateFrame.getContentPane().add(panel);
+                    updateFrame.pack();
+                    updateFrame.setLocationRelativeTo(null);
+                    updateFrame.setVisible(true);
+
+                });
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Zaznacz jeden element!", "Powiadomienie", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     @Override

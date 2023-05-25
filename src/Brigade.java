@@ -47,4 +47,36 @@ public class Brigade extends CheckListItemAbstract implements Serializable {
                 ", id=" + id +
                 '}';
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setForeman(Foreman foreman) {
+        this.foreman = foreman;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public static long getCurrentId() {
+        return currentId;
+    }
+
+    public static void setCurrentId(long currentId) {
+        Brigade.currentId = currentId;
+    }
+
+    public void setEmployeeList(ArrayList<Employee> employeeList) {
+        this.employeeList = employeeList;
+    }
 }
