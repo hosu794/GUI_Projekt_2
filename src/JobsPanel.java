@@ -103,7 +103,7 @@ public class JobsPanel extends JPanel implements JobListActionPanelListener {
                 Work work = (Work) worksList.getModel().getElementAt(j);
 
                 Optional<Work> foundEmployee = checkedJob.getWorks().stream()
-                        .filter(e -> e.getName().equals(work.getName()))
+                        .filter(e -> e.getDescription().equals(work.getDescription()))
                         .findFirst();
 
                 work.setSelected(foundEmployee.isPresent());
