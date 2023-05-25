@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -10,7 +11,10 @@ enum JobStatus {
     COMPLETED
 }
 
-public class Job implements Runnable{
+public class Job extends CheckListItemAbstract implements Runnable, Serializable {
+
+    private static final long serialVersionUID = 7L;
+
 
     public static Job getObject(long id) {
         return jobHashMap.get(id);
@@ -26,6 +30,8 @@ public class Job implements Runnable{
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private JobStatus status;
+
+    private UUID uuid;
 
     public Job(boolean isPlanned) {
         this.setIsPlanned(isPlanned);
@@ -43,6 +49,17 @@ public class Job implements Runnable{
         this.works = workList;
         this.creationDate = LocalDateTime.now();
         this.id = currentId;
+        this.uuid = UUID.randomUUID();
+        currentId++;
+    }
+
+    public Job(JobStatus jobStatus, ArrayList<Work> workList, Brigade brigade) {
+        this.brigade = brigade;
+        this.works = workList;
+        this.creationDate = LocalDateTime.now();
+        this.status = jobStatus;
+        this.id = currentId;
+        this.uuid = UUID.randomUUID();
         currentId++;
     }
 
@@ -53,6 +70,7 @@ public class Job implements Runnable{
 
         return job;
     }
+
 
     public Job(boolean isPlanned, Brigade brigade) {
         this(new ArrayList<>(), brigade);
@@ -212,19 +230,29 @@ public class Job implements Runnable{
         return (amount == 0);
     }
 
+    public JobStatus getStatus() {
+        return status;
+    }
+
+    public Brigade getBrigade() {
+        return brigade;
+    }
+
+    public ArrayList<Work> getWorks() {
+        return works;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
     @Override
     public String toString() {
         return "Job{" +
-                "id=" + id +
-                ", works=" + works +
-                ", brigade=" + brigade +
-                ", creationDate=" + creationDate +
+                "uuid=" + uuid +
+                ", brigade=" + brigade.getName() +
                 ", endDate=" + endDate +
                 ", status=" + status +
                 '}';
-    }
-
-    public JobStatus getStatus() {
-        return status;
     }
 }

@@ -178,9 +178,9 @@ public class BrigadesPanel extends JPanel implements ListActionPanelListener {
                                 newModel.addElement((CheckListItemAbstract) filteredBrigade);
                             }
 
-                            this.brigadeDataSource.saveObject(filteredBrigades);
-
                             this.list.setModel(newModel);
+
+                            this.brigadeDataSource.updateListOfUpdate(filteredBrigades);
 
                             JOptionPane.showMessageDialog(this, "Zaktualizowano Brygadę", "Powiadomienie", JOptionPane.INFORMATION_MESSAGE);
 
