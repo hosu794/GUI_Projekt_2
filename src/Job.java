@@ -2,10 +2,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-enum JobPlan {
-    PLANNED,
-    NOT_PLANNED
-}
 
 enum JobStatus {
     PLANNED,
