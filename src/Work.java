@@ -1,6 +1,5 @@
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 enum WorkType {
     GENERAL,
@@ -10,7 +9,17 @@ enum WorkType {
 }
 public class Work extends Thread implements Serializable {
 
+    private static final long serialVersionUID = 7L;
 
+    private boolean isSelected = false;
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean isSelected) {
+        this.isSelected = isSelected;
+    }
 
     public static Work getObject(long id) {
         return workHashMap.get(id);
@@ -88,5 +97,21 @@ public class Work extends Thread implements Serializable {
                 ", description='" + description + '\'' +
                 ", id=" + id +
                 '}';
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
+    public void setDone(boolean done) {
+        isDone = done;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setWorkType(WorkType workType) {
+        this.workType = workType;
     }
 }
