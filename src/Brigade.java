@@ -45,7 +45,6 @@ public class Brigade extends CheckListItemAbstract implements Serializable {
                 "name='" + name + '\'' +
                 ", foreman=" + foreman +
                 ", id=" + id +
-                ", employeeList=" + employeeList +
                 '}';
     }
 }

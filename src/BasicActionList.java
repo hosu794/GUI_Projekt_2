@@ -1,6 +1,8 @@
 import listeners.ListActionPanelListener;
 
 import javax.swing.*;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 public class BasicActionList extends JPanel {
     
@@ -30,9 +32,6 @@ public class BasicActionList extends JPanel {
             listActionPanelListener.delete();
         });
         add(deleteButton);
-
-        DisplayCurrentUser displayCurrentUser = new DisplayCurrentUser();
-        add(displayCurrentUser);
     }
 
 //    public static void updateLoggedInUser() {

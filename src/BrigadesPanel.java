@@ -6,6 +6,8 @@ import java.awt.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class BrigadesPanel extends JPanel implements ListActionPanelListener {
 
@@ -41,7 +43,23 @@ public class BrigadesPanel extends JPanel implements ListActionPanelListener {
 
     @Override
     public void delete() {
+        ListModel<CheckListItemAbstract> model = list.getModel();
+        int size = model.getSize();
 
+        ArrayList<CheckListItemAbstract> remainingItems = new ArrayList<>();
+
+        ArrayList<Brigade> updatedBrigades = (ArrayList<Brigade>) IntStream.range(0, size)
+                .mapToObj(model::getElementAt)
+                .filter(item -> !item.isSelected())
+                .peek(remainingItems::add)
+                .map(item -> (Brigade) item)
+                .collect(Collectors.toList());
+
+        this.brigadeDataSource.updateListOfUpdate(updatedBrigades);
+
+        DefaultListModel<CheckListItemAbstract> newModel = new DefaultListModel<>();
+        remainingItems.forEach(newModel::addElement);
+        list.setModel(newModel);
     }
 
     @Override
@@ -53,8 +71,8 @@ public class BrigadesPanel extends JPanel implements ListActionPanelListener {
     public void add() {
         EventQueue.invokeLater(() -> {
 
-            ArrayList<Foreman> departments = this.foremenDataSource.getListOfSourceObjects();
-            String[] foremenNames = departments.stream()
+            ArrayList<Foreman> foremen = this.foremenDataSource.getListOfSourceObjects();
+            String[] foremenNames = foremen.stream()
                     .map(Foreman::getLogin)
                     .toArray(String[]::new);
 
@@ -115,7 +133,7 @@ public class BrigadesPanel extends JPanel implements ListActionPanelListener {
                     Foreman foreman = foundForeman.get();
 
                     Brigade newBrigade = new Brigade(name, foreman);
-                    newBrigade.addWorker(allEmployees);
+                    newBrigade.addWorker(checkedEmployees);
 
                     this.brigadeDataSource.saveObject(newBrigade);
 

@@ -76,7 +76,7 @@ public class ChangeCurrentUserPassword extends JPanel {
                            this.foremanDataSource.updateListOfUpdate(updatedForemen);
 
                            LoggedInUser.getInstance().setUser(foreman);
-                            DisplayCurrentUser.updateLoggedInUser();
+                           DisplayCurrentUser.updateLoggedInUser();
 
                            JOptionPane.showMessageDialog(this, "Zmieniono hasło dla Brygadzisty", "Powiadomienie", JOptionPane.INFORMATION_MESSAGE);
                            changePasswordWindow.dispose();

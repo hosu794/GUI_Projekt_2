@@ -1,6 +1,8 @@
 import listeners.EmployeesDepartmentListActionPanelListener;
 
 import javax.swing.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 public class DepartmentEmployeeBasicActionList extends JPanel {
 
@@ -35,9 +37,6 @@ public class DepartmentEmployeeBasicActionList extends JPanel {
             listActionPanelListener.departmentEmployees();
         });
         add(getEmployeesForDepartmentBytton);
-
-        DisplayCurrentUser displayCurrentUser = new DisplayCurrentUser();
-        add(displayCurrentUser);
 
     }
 

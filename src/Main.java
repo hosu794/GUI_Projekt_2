@@ -21,6 +21,8 @@ public class Main extends JFrame implements LoginListener, LogoutListener {
         DataSource foremanSource = new DataSource<Foreman>("foremans.txt");
         DataSource dataSource = new DataSource<User>("users.txt");
 
+        DisplayCurrentUser displayCurrentUser = new DisplayCurrentUser();
+
         loginForm = new LoginForm(this, dataSource, foremanSource);
         application = new Application(this);
         this.getContentPane().add(loginForm);
