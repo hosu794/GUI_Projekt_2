@@ -81,103 +81,108 @@ public class ForemanPanel extends JPanel implements ListActionPanelListener {
 
             Foreman checkedForeman = (Foreman) checkedForemen.get(0);
 
-            EventQueue.invokeLater(() -> {
+            User currentUser = LoggedInUser.getInstance().getUser();
 
-                JFrame updateWindow = new JFrame("Aktualizacja brygadzisty");
-                updateWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            if ((currentUser instanceof Foreman currentForeman) && (currentUser.getLogin().equals(checkedForeman.getLogin()))) {
+                JOptionPane.showMessageDialog(this, "Nie mozesz edytować zalogowanego obecnie brygadzisty!", "Powiadomienie", JOptionPane.ERROR_MESSAGE);
+            } else {
+                EventQueue.invokeLater(() -> {
 
-                JPanel panel = new JPanel();
-                panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+                    JFrame updateWindow = new JFrame("Aktualizacja brygadzisty");
+                    updateWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-                updateWindow.add(panel);
-                updateWindow.setLayout(new FlowLayout());
-                updateWindow.setVisible(true);
+                    JPanel panel = new JPanel();
+                    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-                // Initiation fields
+                    updateWindow.add(panel);
+                    updateWindow.setLayout(new FlowLayout());
+                    updateWindow.setVisible(true);
 
-                JLabel nameLabel = new JLabel("Name: ");
-                JTextField nameField = new JTextField(20);
-                JLabel surnameLabel = new JLabel("Surname");
-                JTextField surnameField = new JTextField(20);
-                JLabel birthDateField = new JLabel("Date");
-                CalendarControl calendarControl = new CalendarControl();
-                JLabel loginLabel = new JLabel("Login");
-                JTextField loginField = new JTextField(20);
-                JLabel passwordLabel = new JLabel("Password");
-                JTextField passwordField = new JPasswordField(20);
-                JComboBox<String> departmentCombo = new JComboBox<>(departmentNamesArray);
-                JButton editButton = new JButton("Aktualizuj");
+                    // Initiation fields
+
+                    JLabel nameLabel = new JLabel("Name: ");
+                    JTextField nameField = new JTextField(20);
+                    JLabel surnameLabel = new JLabel("Surname");
+                    JTextField surnameField = new JTextField(20);
+                    JLabel birthDateField = new JLabel("Date");
+                    CalendarControl calendarControl = new CalendarControl();
+                    JLabel loginLabel = new JLabel("Login");
+                    JTextField loginField = new JTextField(20);
+                    JLabel passwordLabel = new JLabel("Password");
+                    JTextField passwordField = new JPasswordField(20);
+                    JComboBox<String> departmentCombo = new JComboBox<>(departmentNamesArray);
+                    JButton editButton = new JButton("Aktualizuj");
 
 
-                // Setting values to field from user object
+                    // Setting values to field from user object
 
-                nameField.setText(checkedForeman.getName());
-                surnameField.setText(checkedForeman.getSurname());
-                calendarControl.setDate(checkedForeman.getBirthDate());
-                loginField.setText(checkedForeman.getLogin());
-                passwordField.setText(checkedForeman.getPassword());
+                    nameField.setText(checkedForeman.getName());
+                    surnameField.setText(checkedForeman.getSurname());
+                    calendarControl.setDate(checkedForeman.getBirthDate());
+                    loginField.setText(checkedForeman.getLogin());
+                    passwordField.setText(checkedForeman.getPassword());
 
-                departmentCombo.setSelectedItem(checkedForeman.getEmployeesDepartment().getName());
+                    departmentCombo.setSelectedItem(checkedForeman.getEmployeesDepartment().getName());
 
-                panel.add(nameLabel);
-                panel.add(nameField);
-                panel.add(surnameField);
-                panel.add(surnameLabel);
-                panel.add(birthDateField);
-                panel.add(calendarControl);
-                panel.add(loginLabel);
-                panel.add(loginField);
-                panel.add(passwordLabel);
-                panel.add(passwordField);
-                panel.add(departmentCombo);
-                panel.add(editButton);
+                    panel.add(nameLabel);
+                    panel.add(nameField);
+                    panel.add(surnameField);
+                    panel.add(surnameLabel);
+                    panel.add(birthDateField);
+                    panel.add(calendarControl);
+                    panel.add(loginLabel);
+                    panel.add(loginField);
+                    panel.add(passwordLabel);
+                    panel.add(passwordField);
+                    panel.add(departmentCombo);
+                    panel.add(editButton);
 
-                editButton.addActionListener(e -> {
+                    editButton.addActionListener(e -> {
 
-                    LocalDate selectedDate = calendarControl.getSelectedDate();
-                    String name = nameField.getText();
-                    String surname = surnameField.getText();
-                    String login = loginField.getText();
-                    String password = passwordField.getText();
-                    String departmentName = (String) departmentCombo.getSelectedItem();
+                        LocalDate selectedDate = calendarControl.getSelectedDate();
+                        String name = nameField.getText();
+                        String surname = surnameField.getText();
+                        String login = loginField.getText();
+                        String password = passwordField.getText();
+                        String departmentName = (String) departmentCombo.getSelectedItem();
 
-                    ArrayList<EmployeesDepartment> allDepartments =
-                            (ArrayList<EmployeesDepartment>) this.departmentDataSource.getListOfSourceObjects();
+                        ArrayList<EmployeesDepartment> allDepartments =
+                                (ArrayList<EmployeesDepartment>) this.departmentDataSource.getListOfSourceObjects();
 
-                    EmployeesDepartment foundDepartment = allDepartments.stream().filter(employeesDepartment -> employeesDepartment.getName().equals(departmentName)).findAny().get();
+                        EmployeesDepartment foundDepartment = allDepartments.stream().filter(employeesDepartment -> employeesDepartment.getName().equals(departmentName)).findAny().get();
 
-                    ArrayList<Foreman> users = this.foremenDataSource.getListOfSourceObjects();
+                        ArrayList<Foreman> users = this.foremenDataSource.getListOfSourceObjects();
 
-                    ArrayList<Foreman> filteredForemen = (ArrayList<Foreman>) users.stream()
-                            .filter(foreman -> !foreman.getLogin().equals(checkedForeman.getLogin())).collect(Collectors.toList());
+                        ArrayList<Foreman> filteredForemen = (ArrayList<Foreman>) users.stream()
+                                .filter(foreman -> !foreman.getLogin().equals(checkedForeman.getLogin())).collect(Collectors.toList());
 
-                    Foreman updatedForeman = Foreman.createForeman(name, surname, selectedDate, login, password, foundDepartment);
+                        Foreman updatedForeman = Foreman.createForeman(name, surname, selectedDate, login, password, foundDepartment);
 
-                    filteredForemen.add(updatedForeman);
+                        filteredForemen.add(updatedForeman);
 
-                    DefaultListModel<CheckListItemAbstract> newModel = new DefaultListModel<>();
+                        DefaultListModel<CheckListItemAbstract> newModel = new DefaultListModel<>();
 
-                    for (User filteredUser : filteredForemen) {
-                        newModel.addElement((CheckListItemAbstract) filteredUser);
-                    }
+                        for (User filteredUser : filteredForemen) {
+                            newModel.addElement((CheckListItemAbstract) filteredUser);
+                        }
 
-                    this.list.setModel(newModel);
+                        this.list.setModel(newModel);
 
-                    this.foremenDataSource.updateListOfUpdate(filteredForemen);
+                        this.foremenDataSource.updateListOfUpdate(filteredForemen);
 
-                    JOptionPane.showMessageDialog(this, "Zaktualizowano Brygadziste", "Powiadomienie", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "Zaktualizowano Brygadziste", "Powiadomienie", JOptionPane.INFORMATION_MESSAGE);
 
-                    updateWindow.dispose();
+                        updateWindow.dispose();
+
+                    });
+
+                    updateWindow.getContentPane().add(panel);
+                    updateWindow.pack();
+                    updateWindow.setLocationRelativeTo(null);
+                    updateWindow.setVisible(true);
 
                 });
-
-                updateWindow.getContentPane().add(panel);
-                updateWindow.pack();
-                updateWindow.setLocationRelativeTo(null);
-                updateWindow.setVisible(true);
-
-            });
-
+            }
 
         } else {
             JOptionPane.showMessageDialog(this, "Zaznacz jeden element!", "Powiadomienie", JOptionPane.INFORMATION_MESSAGE);
